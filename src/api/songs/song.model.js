@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     name: { type: String, unique: true, required: true },
     image: { type: String, required: true },
-    genre: { type: String, required: true },
-    albums: [{ type: Schema.Types.ObjectId, ref:"albums"}],
-    playlists: [{ type: Schema.Types.ObjectId, ref:"playlists"}]
+    albumName: { type: String, required: true },
+    artistName: { type: String, required: true },
+    
    
 
 },
@@ -15,4 +15,4 @@ const schema = new Schema({
     }
 );
 
-module.exports = mongoose.model('artists', schema);
+module.exports = mongoose.model('songs', schema);

@@ -5,7 +5,6 @@ const schema = new Schema({
     name: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     image: { type: String, required: true },
-    artists: [{ type: Schema.Types.ObjectId, ref:"artists"}],
     playlists: [{ type: Schema.Types.ObjectId, ref:"playlists"}]
 
 },
