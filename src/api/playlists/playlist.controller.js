@@ -6,13 +6,13 @@ const { deleteFile } = require("../../middleware/delete-file");
 
 const getAllPlaylists = async (req, res, next) => {
   try {
-    const playlists = Playlist.find().sort({ createAt: 'desc' }).populate("users songs");
+    const playlists = await Playlist.find().populate("users songs");/*.sort({ createAt: 'desc' })*/
     return res.status(200).json({
       message: 'All Playlists',
       playlists
     })
   } catch (error) {
-    return next(setError(500, error.message | 'Failed recover all playlist'));
+    return next(setError(500, error.message | 'Failed recover all playlists'));
   }
 }
 
@@ -53,7 +53,7 @@ const updatePlaylist = async (req, res, next) => {
     const playlist = new Playlist(req.body);
     playlist._id = id;
     // Si pasamos un nuevo cover -> se añade sobre su porpiedad
-    if (req.file) playlist.cover = req.file.path;
+    if (req.file) playlist.image = req.file.path;
     const updatedPlaylist = await Playlist.findByIdAndUpdate(id, playlist);
     if (!updatedPlaylist) return next(setError(404, 'Playlist not found'));
     return res.status(201).json({
@@ -69,8 +69,8 @@ const updatePlaylist = async (req, res, next) => {
 const removePlaylist = async (req, res, next) => {
   try {
     const { id } = req.params;
-    if (playlist.cover) deleteFile(playlist.cover);
     const deletedPlaylist = await Playlist.findByIdAndDelete(id);
+    if (deletedPlaylist.image) deleteFile(deletedPlaylist.image);
     if (!deletedPlaylist) return next(setError(404, 'Playlist not found'));
     return res.status(200).json({
       message: 'Delete Playlist',

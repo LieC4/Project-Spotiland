@@ -4,6 +4,17 @@ const bcrypt = require("bcrypt");
 const { createToken } = require("../../helpers/utils/token-action");
 const { setError } = require("../../helpers/utils/error");
 
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find()//.sort({ createAt: 'desc' });
+    return res.status(200).json({
+      message: 'All Users',
+      users
+    })
+  } catch (error) {
+    return next(setError(500, error.message | 'Failed recover all users'));
+  }
+}
 
 const userById = async (req, res, next) => {
     try {
@@ -80,7 +91,7 @@ const update = async (req, res, next) => {
     }
   }
   
-  module.exports = { register, login, userById, update, remove };
+  module.exports = { getAllUsers, register, login, userById, update, remove };
 
 
 

@@ -51,8 +51,8 @@ const updateSong= async (req, res, next) => {
     const song = new Song(req.body);
     song._id = id;
     // Si pasamos un nuevo cover -> se añade sobre su porpiedad
-    if (req.file) song.image = req.file.path;
     const updatedSong = await Song.findByIdAndUpdate(id, song);
+    if (req.file) song.image = req.file.path;
     if (!updatedSong) return next(setError(404, 'Song not found'));
     return res.status(201).json({
       message: 'Updated Song',
@@ -67,8 +67,8 @@ const updateSong= async (req, res, next) => {
 const removeSong = async (req, res, next) => {
   try {
     const { id } = req.params;
-    if (song.image) deleteFile(song.image);
     const deletedSong = await Song.findByIdAndDelete(id);
+    if (deletedSong.image) deleteFile(deletedSong.image);
     if (!deletedSong) return next(setError(404, 'Song not found'));
     return res.status(200).json({
       message: 'Delete Song',

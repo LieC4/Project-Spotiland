@@ -3,7 +3,7 @@ const rateLimit = require("express-rate-limit");
 const { authorize } = require("../../middleware/auth");
 
 
-const { register, login, userById, update, remove } = require("./user.controller");
+const { getAllUsers, register, login, userById, update, remove } = require("./user.controller");
 
 
 const userCreateRateLimit = rateLimit({
@@ -13,6 +13,7 @@ const userCreateRateLimit = rateLimit({
   legacyHeaders: false,
 });
 
+UserRoutes.get('/getAll', getAllUsers);
 UserRoutes.post('/register', [userCreateRateLimit], register);
 UserRoutes.post('/login', login);
 UserRoutes.get('/:id', [authorize], userById);
