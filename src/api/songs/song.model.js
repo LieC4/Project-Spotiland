@@ -7,7 +7,6 @@ const schema = new Schema({
     albumName: { type: String, required: true },
     artistName: { type: String, required: true },
     
-   
 
 },
     {

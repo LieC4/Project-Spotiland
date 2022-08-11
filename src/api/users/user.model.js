@@ -1,10 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const bcrypt = require("bcrypt");
+const {validationPassword} = require("../../helpers/utils/util");
+const {setError} = require("../../helpers/utils/error")
+
+
+
 const schema = new Schema({
     name: { type: String, unique: true, required: true },
+    email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    image: { type: String, required: true },
+    image: { type: String},
     playlists: [{ type: Schema.Types.ObjectId, ref:"playlists"}]
 
 },
@@ -13,4 +20,13 @@ const schema = new Schema({
     }
 );
 
+
+schema.pre('save', function(next) {
+    if(!validationPassword(this.password)) return next(setError('404', "Invalid password"));
+    this.password = bcrypt.hashSync(this.password, 16);
+    next();
+});
+
 module.exports = mongoose.model('users', schema);
+
+//ultima linea mirar por si falla jeje
